@@ -201,18 +201,39 @@ public class PinningTests {
     public void testRunEquals() {
         System.out.println("run: equals");
         MainPanel instance = new MainPanel(15);
-        Cell[][] cells=instance.getCells();
-        cells[6][9].setAlive(true);
-        cells[6][10].setAlive(true);
-        cells[7][9].setAlive(true);
-        cells[7][10].setAlive(true);
-        instance.setCells(cells);
-        instance.run();
+        //set up expected result
+        Cell[][] expResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if ((i==6 &&j==9)||(i==6 && j==10)||(i==7 && j==9)||(i==7 && j==10)){
+                    expResult[i][j]=new Cell(true);
+                }else{
+                    expResult[i][j]=new Cell(false);
+                }
+            }
+        }
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[6][9].setAlive(true);
+        result[6][10].setAlive(true);
+        result[7][9].setAlive(true);
+        result[7][10].setAlive(true);
+        instance.setCells(result);
         System.out.println(instance.toString());
+        instance.run();
+        //cells[7][10].setAlive(true);
+        System.out.println(instance.toString());
+        System.out.println(expResult[7][10].getAlive());
+        //Cell[][] expResult=new Cell[cells..length][cells.length];
         // TODO review the generated test code and remove the default call to fail.
-        assertArrayEquals(cells,instance.getCells());
+        result=instance.getCells();
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult[i][j].getAlive(),result[i][j].getAlive());
+            }
+        }        
     }
-    
     /**
      * Test of run method, of class MainPanel.
      * tests whether the cells changed to make a square,
@@ -222,29 +243,37 @@ public class PinningTests {
     public void testRunSquare() {
         System.out.println("run: Square");
         MainPanel instance = new MainPanel(15);
-        Cell[][] cells=new Cell[15][15];
+        //set up expected result
+        Cell[][] expResult=new Cell[15][15];
         for (int i=0;i<15;i++){
             for (int j=0;j<15; j++){
-                if ((i==6 &&j==9)||(i==6 && j==10)||(i==7 && j==9)){
-                    cells[i][j]=new Cell(true);
+                if ((i==6 &&j==9)||(i==6 && j==10)||(i==7 && j==9)||(i==7 && j==10)){
+                    expResult[i][j]=new Cell(true);
                 }else{
-                    cells[i][j]=new Cell(false);
+                    expResult[i][j]=new Cell(false);
                 }
             }
         }
-        //cells[6][9].setAlive(true);
-        //cells[6][10].setAlive(true);
-        //cells[7][9].setAlive(true);
-        instance.setCells(cells.clone());
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[6][9].setAlive(true);
+        result[6][10].setAlive(true);
+        result[7][9].setAlive(true);
+        instance.setCells(result);
         System.out.println(instance.toString());
         instance.run();
         //cells[7][10].setAlive(true);
         System.out.println(instance.toString());
-        System.out.println(cells[7][10].getAlive());
+        System.out.println(expResult[7][10].getAlive());
         //Cell[][] expResult=new Cell[cells..length][cells.length];
         // TODO review the generated test code and remove the default call to fail.
-        assertArrayEquals(cells,instance.getCells());
-        
+        result=instance.getCells();
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult[i][j].getAlive(),result[i][j].getAlive());
+            }
+        }        
     }
     
     /**

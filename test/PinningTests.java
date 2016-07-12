@@ -194,11 +194,12 @@ public class PinningTests {
 
     /**
      * Test of run method, of class MainPanel.
-     * includes the use of private methods calculateNextIteration and convertToInt
+     * tests whether the cells are the same after a run, when they should be the same,
+     * according to the previous implementation this passes
      */
     @Test
-    public void testRun() {
-        System.out.println("run");
+    public void testRunEquals() {
+        System.out.println("run: equals");
         MainPanel instance = new MainPanel(15);
         Cell[][] cells=instance.getCells();
         cells[6][9].setAlive(true);
@@ -209,9 +210,43 @@ public class PinningTests {
         instance.run();
         System.out.println(instance.toString());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertArrayEquals(cells,instance.getCells());
     }
-
+    
+    /**
+     * Test of run method, of class MainPanel.
+     * tests whether the cells changed to make a square,
+     * like it used to in the original program
+     */
+    @Test
+    public void testRunSquare() {
+        System.out.println("run: Square");
+        MainPanel instance = new MainPanel(15);
+        Cell[][] cells=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if ((i==6 &&j==9)||(i==6 && j==10)||(i==7 && j==9)){
+                    cells[i][j]=new Cell(true);
+                }else{
+                    cells[i][j]=new Cell(false);
+                }
+            }
+        }
+        //cells[6][9].setAlive(true);
+        //cells[6][10].setAlive(true);
+        //cells[7][9].setAlive(true);
+        instance.setCells(cells.clone());
+        System.out.println(instance.toString());
+        instance.run();
+        //cells[7][10].setAlive(true);
+        System.out.println(instance.toString());
+        System.out.println(cells[7][10].getAlive());
+        //Cell[][] expResult=new Cell[cells..length][cells.length];
+        // TODO review the generated test code and remove the default call to fail.
+        assertArrayEquals(cells,instance.getCells());
+        
+    }
+    
     /**
      * Test of runContinuous method, of class MainPanel.
      */
@@ -340,5 +375,5 @@ public class PinningTests {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+    */
 }

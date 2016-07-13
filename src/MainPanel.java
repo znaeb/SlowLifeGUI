@@ -12,10 +12,6 @@ public class MainPanel extends JPanel {
     private Cell[][] _backupCells;
 
     private int _size = 0;
-
-    private int _maxCount = 10000;
-
-    public int _r = 1000;
     
     private boolean _running = false;
 

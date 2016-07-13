@@ -82,19 +82,45 @@ public class PinningTests {
     
     /**
      * Test of toString method, of class Cell.
+     * tests alive
      */
-    /*
     @Test
-    public void testToString() {
-        System.out.println("toString");
+    public void testCellToStringAlive() {
+        System.out.println("Cell: toString: Alive");
         Cell instance = new Cell();
-        String expResult = "";
+        instance.setAlive(true);
+        String expResult = "X";
         String result = instance.toString();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
-
+    /**
+     * Test of toString method, of class Cell.
+     * tests not alive
+     */
+    @Test
+    public void testCellToStringNotAlive() {
+        System.out.println("Cell: toString: notAlive");
+        Cell instance = new Cell();
+        instance.setAlive(false);
+        String expResult = ".";
+        String result = instance.toString();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }
+    /**
+     * Test of toString method, of class Cell.
+     * tests default
+     */
+    @Test
+    public void testCellToStringDefault() {
+        System.out.println("Cell: toString: notAlive");
+        Cell instance = new Cell();
+        String expResult = ".";
+        String result = instance.toString();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }
     /**
      * Test of setAlive method, of class Cell.
      */

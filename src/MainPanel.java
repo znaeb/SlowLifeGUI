@@ -100,7 +100,7 @@ public class MainPanel extends JPanel {
 		_cells[j][k].setAlive(nextIter[j][k]);
 	    }
 	}
-	setVisible(true);
+	//setVisible(true);
     }
 
     /**
@@ -298,7 +298,7 @@ public class MainPanel extends JPanel {
 	// Need to call setVisible() since
 	// we did not do a displayIteration()
 	// call.
-	setVisible(true);
+	//setVisible(true);
     }
 
     /**

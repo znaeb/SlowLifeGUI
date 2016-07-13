@@ -5,6 +5,8 @@
  */
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -477,6 +479,7 @@ public class PinningTests {
     /**
      * Test of runContinuous method, of class MainPanel.
      */
+    /*
     @Test
     public void testRunContinuous() {
         System.out.println("runContinuous");
@@ -486,6 +489,478 @@ public class PinningTests {
         fail("The test case is a prototype.");
     }
 
+    /**
+     * Test of run method, of class MainPanel.
+     * tests whether the cells are the same after a run,
+     * when they should be the same according to the previous implementation this program
+     */
+    @Test
+    public void testRunContinuousEquals() {
+        System.out.println("runContinuous: equals");
+        MainPanel instance = new MainPanel(15);
+        //set up expected result
+        Cell[][] expResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if ((i==0 &&j==6)||(i==0 && j==9)||(i==1 && j==7)||(i==1 && j==8)
+                        ||(i==2 && j==3)||(i==2 && j==4)||(i==3 && j==2)
+                        ||(i==3 && j==5)||(i==4 && j==3)||(i==4 && j==4)
+                        ||(i==4 && j==9)||(i==4 && j==10)||(i==5 && j==0)
+                        ||(i==5 && j==8)||(i==5 && j==11)||(i==6 && j==1)
+                        ||(i==6 && j==7)||(i==6 && j==9)||(i==6 && j==10)
+                        ||(i==6 && j==12)||(i==6 && j==14)||(i==7 && j==0)
+                        ||(i==7 && j==4)||(i==7 && j==8)||(i==7 && j==11)
+                        ||(i==8 && j==3)||(i==8 && j==5)||(i==8 && j==9)
+                        ||(i==8 && j==10)||(i==9 && j==3)||(i==9 && j==5)
+                        ||(i==10 && j==4)||(i==11 && j==11)||(i==11 && j==12)
+                        ||(i==12 && j==11)||(i==12 && j==12)||(i==13 && j==7)
+                        ||(i==13 && j==8)||(i==14 && j==6)||(i==14 && j==9)){
+                    expResult[i][j]=new Cell(true);
+                }else{
+                    expResult[i][j]=new Cell(false);
+                }
+            }
+        }
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[0][6].setAlive(true);
+        result[0][9].setAlive(true);
+        result[1][7].setAlive(true);
+        result[1][8].setAlive(true);
+        result[2][3].setAlive(true);
+        result[2][4].setAlive(true);
+        result[3][2].setAlive(true);
+        result[3][5].setAlive(true);
+        result[4][3].setAlive(true);
+        result[4][4].setAlive(true);
+        result[4][9].setAlive(true);
+        result[4][10].setAlive(true);
+        result[5][0].setAlive(true);
+        result[5][8].setAlive(true);
+        result[5][11].setAlive(true);
+        result[6][1].setAlive(true);
+        result[6][7].setAlive(true);
+        result[6][9].setAlive(true);
+        result[6][10].setAlive(true);
+        result[6][12].setAlive(true);
+        result[6][14].setAlive(true);
+        result[7][0].setAlive(true);
+        result[7][4].setAlive(true);
+        result[7][8].setAlive(true);
+        result[7][11].setAlive(true);
+        result[8][3].setAlive(true);
+        result[8][5].setAlive(true);
+        result[8][9].setAlive(true);
+        result[8][10].setAlive(true);
+        result[9][3].setAlive(true);
+        result[9][5].setAlive(true);
+        result[10][4].setAlive(true);
+        result[11][11].setAlive(true);
+        result[11][12].setAlive(true);
+        result[12][11].setAlive(true);
+        result[12][12].setAlive(true);
+        result[13][7].setAlive(true);
+        result[13][8].setAlive(true);
+        result[14][6].setAlive(true);
+        result[14][9].setAlive(true);
+        instance.setCells(result);
+//instance.runContinuous();
+        Thread runningThread = new Thread() {
+            public void run() {
+                instance.runContinuous();
+                //System.out.println(factorialOf + "! = " + Utils.computeFactorial(factorialOf));
+            }
+        };
+        boolean running=true;
+        Cell[][] lastResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                lastResult[i][j]=result[i][j];
+            }
+        }
+        runningThread.start();
+
+        while(running){
+            boolean theSame=true;
+            try {
+                Thread.sleep(5000);
+                //runningThread.interrupt();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PinningTests.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i=0;i<15;i++){
+                for (int j=0;j<15; j++){
+                    if(lastResult[i][j]!=result[i][j]){
+                        theSame=false;
+                    }
+                }
+            }
+            if(theSame==false){
+                for (int i=0;i<15;i++){
+                    for (int j=0;j<15; j++){
+                        lastResult[i][j]=result[i][j];
+                    }
+                }
+            }else{
+                instance.stop();
+                //runningThread.interrupt();
+                running=false;
+            }
+        }
+        result=instance.getCells();
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult[i][j].getAlive(),result[i][j].getAlive());
+            }
+        }        
+    }
+    /**
+     * Test of runContinuous method, of class MainPanel.
+     * tests whether the cells are the same after a run, when they should be the same,
+     * according to the previous implementation this passes
+     */
+    @Test
+    public void testRunContinuousEmpty() {
+        System.out.println("runContinuous: empty");
+        MainPanel instance = new MainPanel(15);
+        //set up expected result
+        /*Cell[][] expResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if ((i==6 &&j==9)||(i==6 && j==10)||(i==7 && j==9)||(i==7 && j==10)){
+                    expResult[i][j]=new Cell(true);
+                }else{
+                    expResult[i][j]=new Cell(false);
+                }
+            }
+        }*/
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[1][6].setAlive(true);
+        result[1][7].setAlive(true);
+        result[3][2].setAlive(true);
+        result[3][10].setAlive(true);
+        result[4][3].setAlive(true);
+        result[5][6].setAlive(true);
+        result[5][12].setAlive(true);
+        result[6][5].setAlive(true);
+        result[6][10].setAlive(true);
+        result[9][7].setAlive(true);
+        result[9][13].setAlive(true);
+        result[10][4].setAlive(true);
+        result[10][12].setAlive(true);
+        result[11][4].setAlive(true);
+        result[12][10].setAlive(true);
+        result[12][13].setAlive(true);
+        result[13][9].setAlive(true);
+        result[13][14].setAlive(true);
+        instance.setCells(result);
+//instance.runContinuous();
+        Thread runningThread = new Thread() {
+            public void run() {
+                instance.runContinuous();
+                //System.out.println(factorialOf + "! = " + Utils.computeFactorial(factorialOf));
+            }
+        };
+        boolean running=true;
+        Cell[][] lastResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                lastResult[i][j]=result[i][j];
+            }
+        }
+        runningThread.start();
+
+        while(running){
+            boolean theSame=true;
+            try {
+                Thread.sleep(5000);
+                //runningThread.interrupt();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PinningTests.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i=0;i<15;i++){
+                for (int j=0;j<15; j++){
+                    if(lastResult[i][j]!=result[i][j]){
+                        theSame=false;
+                    }
+                }
+            }
+            if(theSame==false){
+                for (int i=0;i<15;i++){
+                    for (int j=0;j<15; j++){
+                        lastResult[i][j]=result[i][j];
+                    }
+                }
+            }else{
+                instance.stop();
+                //runningThread.interrupt();
+                running=false;
+            }
+        }
+        result=instance.getCells();
+        boolean expResult=false;
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult,result[i][j].getAlive());
+            }
+        }        
+    }
+    /**
+     * Test of runContinuous method, of class MainPanel.
+     * tests whether the cells changed to make a square,
+     * like it used to in the original program
+     */
+    @Test
+    public void testRunContinuousSquare() {
+        System.out.println("runContinuous: Square");
+        MainPanel instance = new MainPanel(15);
+        //set up expected result
+        Cell[][] expResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if ((i==6 &&j==9)||(i==6 && j==10)||(i==7 && j==9)||(i==7 && j==10)){
+                    expResult[i][j]=new Cell(true);
+                }else{
+                    expResult[i][j]=new Cell(false);
+                }
+            }
+        }
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[6][9].setAlive(true);
+        result[6][10].setAlive(true);
+        result[7][9].setAlive(true);
+        instance.setCells(result);
+//instance.runContinuous();
+        Thread runningThread = new Thread() {
+            public void run() {
+                instance.runContinuous();
+                //System.out.println(factorialOf + "! = " + Utils.computeFactorial(factorialOf));
+            }
+        };
+        boolean running=true;
+        Cell[][] lastResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                lastResult[i][j]=result[i][j];
+            }
+        }
+        runningThread.start();
+
+        while(running){
+            boolean theSame=true;
+            try {
+                Thread.sleep(5000);
+                //runningThread.interrupt();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PinningTests.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i=0;i<15;i++){
+                for (int j=0;j<15; j++){
+                    if(lastResult[i][j]!=result[i][j]){
+                        theSame=false;
+                    }
+                }
+            }
+            if(theSame==false){
+                for (int i=0;i<15;i++){
+                    for (int j=0;j<15; j++){
+                        lastResult[i][j]=result[i][j];
+                    }
+                }
+            }else{
+                instance.stop();
+                //runningThread.interrupt();
+                running=false;
+            }
+        }
+        result=instance.getCells();
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult[i][j].getAlive(),result[i][j].getAlive());
+            }
+        }        
+    }
+    /**
+     * Test of runContinuous method, of class MainPanel.
+     * tests whether the cells changed to make a square,
+     * like it used to in the original program, if three corners were picked
+     */
+    @Test
+    public void testRunContinuousCorner() {
+        System.out.println("runContinuous: corners");
+        MainPanel instance = new MainPanel(15);
+        //set up expected result
+        Cell[][] expResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if ((i==0 &&j==0)||(i==0 && j==14)||(i==14 && j==0)||(i==14 && j==14)){
+                    expResult[i][j]=new Cell(true);
+                }else{
+                    expResult[i][j]=new Cell(false);
+                }
+            }
+        }
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[0][0].setAlive(true);
+        result[0][14].setAlive(true);
+        result[14][0].setAlive(true);
+        instance.setCells(result);
+        //instance.runContinuous();
+        Thread runningThread = new Thread() {
+            public void run() {
+                instance.runContinuous();
+                //System.out.println(factorialOf + "! = " + Utils.computeFactorial(factorialOf));
+            }
+        };
+        boolean running=true;
+        Cell[][] lastResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                lastResult[i][j]=result[i][j];
+            }
+        }
+        runningThread.start();
+
+        while(running){
+            boolean theSame=true;
+            try {
+                Thread.sleep(5000);
+                //runningThread.interrupt();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PinningTests.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i=0;i<15;i++){
+                for (int j=0;j<15; j++){
+                    if(lastResult[i][j]!=result[i][j]){
+                        theSame=false;
+                    }
+                }
+            }
+            if(theSame==false){
+                for (int i=0;i<15;i++){
+                    for (int j=0;j<15; j++){
+                        lastResult[i][j]=result[i][j];
+                    }
+                }
+            }else{
+                instance.stop();
+                //runningThread.interrupt();
+                running=false;
+            }
+        }
+        result=instance.getCells();
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult[i][j].getAlive(),result[i][j].getAlive());
+            }
+        }        
+    }
+    
+    /**
+     * Test of runContinuous method, of class MainPanel.
+     * tests whether the cells changed how they used to in the original program,
+     * given that I chose the starting bits by randomly clicking
+     * this tests various things, and should remain unchanged between versions.
+     */
+    @Test
+    public void testRunContinuousMishmash() {
+        System.out.println("runContinuous: Mishmash");
+        MainPanel instance = new MainPanel(15);
+        //set up expected result
+        Cell[][] expResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                if (
+                        (i==6 && j==9)||(i==6 && j==10)||(i==7 && j==9)||
+                        (i==7 && j==10)){
+                    expResult[i][j]=new Cell(true);
+                }else{
+                    expResult[i][j]=new Cell(false);
+                }
+            }
+        }
+        //set up instance.run result
+        Cell[][] result=instance.getCells();
+        result[2][7].setAlive(true);
+        result[4][10].setAlive(true);
+        result[5][5].setAlive(true);
+        result[5][6].setAlive(true);
+        result[5][7].setAlive(true);
+        result[5][9].setAlive(true);
+        result[6][6].setAlive(true);
+        result[6][8].setAlive(true);
+        result[6][9].setAlive(true);
+        result[7][5].setAlive(true);
+        result[7][6].setAlive(true);
+        result[7][7].setAlive(true);
+        result[7][9].setAlive(true);
+        result[7][10].setAlive(true);
+        result[7][11].setAlive(true);
+        result[8][5].setAlive(true);
+        result[9][10].setAlive(true);
+        result[10][6].setAlive(true);
+        result[10][7].setAlive(true);
+        result[10][9].setAlive(true);
+        instance.setCells(result);
+        //System.out.println(instance.toString());
+        //instance.runContinuous();
+        Thread runningThread = new Thread() {
+            public void run() {
+                instance.runContinuous();
+                //System.out.println(factorialOf + "! = " + Utils.computeFactorial(factorialOf));
+            }
+        };
+        boolean running=true;
+        Cell[][] lastResult=new Cell[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                lastResult[i][j]=result[i][j];
+            }
+        }
+        runningThread.start();
+
+        while(running){
+            boolean theSame=true;
+            try {
+                Thread.sleep(10000);
+                //runningThread.interrupt();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PinningTests.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i=0;i<15;i++){
+                for (int j=0;j<15; j++){
+                    if(lastResult[i][j]!=result[i][j]){
+                        theSame=false;
+                    }
+                }
+            }
+            if(theSame==false){
+                for (int i=0;i<15;i++){
+                    for (int j=0;j<15; j++){
+                        lastResult[i][j]=result[i][j];
+                    }
+                }
+            }else{
+                instance.stop();
+                //runningThread.interrupt();
+                running=false;
+            }
+        }
+        result=instance.getCells();
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15; j++){
+                assertEquals("Error at ["+i+"]["+j+"] ",
+                        expResult[i][j].getAlive(),result[i][j].getAlive());
+            }
+        }        
+    }
     /**
      * Test of stop method, of class MainPanel.
      */

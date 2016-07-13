@@ -67,8 +67,8 @@ public class MainPanel extends JPanel {
 	if (_cells[rightX][y].getAlive())     { numNeighbors++; }
 	if (_cells[x][upY].getAlive())        { numNeighbors++; }
 	if (_cells[x][downY].getAlive())      { numNeighbors++; }
-	    
-	return convertToInt(numNeighbors);
+	return(numNeighbors);
+	//return convertToInt(numNeighbors);
 
     }
 

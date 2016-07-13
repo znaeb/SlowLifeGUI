@@ -194,7 +194,6 @@ public class MainPanel extends JPanel {
 	
 	for (int j = 0; j < _size; j++) {
 	    for(int k = 0; k < _size; k++) {
-                toWrite += _cells[j][k].toString();
 		if (_cells[j][k].getAlive()) {
 		    toWrite += _cells[j][k].toString();
 		} else {

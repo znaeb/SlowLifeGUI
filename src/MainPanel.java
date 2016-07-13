@@ -29,22 +29,7 @@ public class MainPanel extends JPanel {
     
     public Cell[][] getCells() {
 	return _cells;
-    }
-
-    private int convertToInt(int x) {
-	int c = 0;
-	String padding = "0";
-	while (c < _r) {
-	    String l = new String("0");
-	    padding += l;
-	    c++;
-	}
-	
-	String n = padding + String.valueOf(x);
-	int q = Integer.parseInt(n);
-	return q;
-    }
-    
+    } 
     private int getNumNeighbors(int x, int y) {
 	int size = _size;
 	int leftX = (x - 1) % size;
@@ -68,8 +53,6 @@ public class MainPanel extends JPanel {
 	if (_cells[x][upY].getAlive())        { numNeighbors++; }
 	if (_cells[x][downY].getAlive())      { numNeighbors++; }
 	return(numNeighbors);
-	//return convertToInt(numNeighbors);
-
     }
 
     private boolean iterateCell(int x, int y) {
@@ -100,7 +83,6 @@ public class MainPanel extends JPanel {
 		_cells[j][k].setAlive(nextIter[j][k]);
 	    }
 	}
-	//setVisible(true);
     }
 
     /**
@@ -175,8 +157,6 @@ public class MainPanel extends JPanel {
 	} catch (Exception ex) {
 	    System.out.println("Nothin' yet");
 	}
-					   
-	
     }
 
     /**
@@ -223,17 +203,9 @@ public class MainPanel extends JPanel {
 	_running = true;
 	while (_running) {
 	    System.out.println("Running...");
-	    //int origR = _r;
 	    try {
 		Thread.sleep(20);
 	    } catch (InterruptedException iex) { }
-	    
-            /*for (int j=0; j < _maxCount; j++) {
-	    	_r += (j % _size) % _maxCount;
-		_r += _maxCount;
-	    }
-	    _r = origR;
-            */
 	    backup();
 	    calculateNextIteration();
 	}
@@ -295,10 +267,6 @@ public class MainPanel extends JPanel {
 		_cells[j][k].reset();
 	    }
 	}
-	// Need to call setVisible() since
-	// we did not do a displayIteration()
-	// call.
-	//setVisible(true);
     }
 
     /**

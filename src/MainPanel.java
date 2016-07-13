@@ -94,7 +94,7 @@ public class MainPanel extends JPanel {
     }
 
     private void displayIteration(boolean[][] nextIter) {
-	System.out.println("\tDisplaying...");
+	//System.out.println("\tDisplaying...");
 	for (int j = 0; j < _size; j++) {
 	    for (int k = 0; k < _size;  k++) {
 		_cells[j][k].setAlive(nextIter[j][k]);
@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
      */
     
     private void calculateNextIteration() {
-	System.out.println("\tCalculating..");
+	//System.out.println("\tCalculating..");
 	boolean[][] nextIter = new boolean[_size][_size];
 	for (int j = 0; j < _size; j++) {
 	    for (int k = 0; k < _size; k++) {
@@ -222,9 +222,9 @@ public class MainPanel extends JPanel {
     public void runContinuous() {
 	_running = true;
 	while (_running) {
-	    System.out.println("Running...");
+	    //System.out.println("Running...");
 	    //int origR = _r;
-	    /*try {
+	    try {
 		Thread.sleep(20);
 	    } catch (InterruptedException iex) { }
 	    
